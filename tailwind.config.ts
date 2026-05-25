@@ -1,0 +1,60 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        brand: {
+          50: "#e9eef4",
+          100: "#d3ddea",
+          200: "#bdcde0",
+          300: "#a7bcd6",
+          400: "#91accc",
+          500: "#235999",
+          600: "#235999",
+          700: "#1e4d87",
+          800: "#183e6b",
+          900: "#15355b"
+        },
+        ink: {
+          50: "#F6F8FB",
+          100: "#F8FAFC",
+          200: "#EEF3F8",
+          300: "#E5EAF0",
+          400: "#CBD5E1",
+          500: "#64748B",
+          600: "#475569",
+          700: "#334155",
+          800: "#1E293B",
+          900: "#0F172A"
+        },
+        signal: {
+          system: "#235999",
+          amber: "#d89022",
+          coral: "#da6255",
+          mint: "#42b892"
+        }
+      },
+      boxShadow: {
+        crisp: "0 1px 2px rgba(15, 23, 42, 0.08)",
+        lift: "0 18px 40px rgba(15, 23, 42, 0.12)"
+      },
+      borderRadius: {
+        ui: "8px"
+      }
+    },
+  },
+  plugins: [],
+};
+
+export default config;

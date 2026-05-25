@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 216 38% 97%;
+  --foreground: 222 47% 11%;
+  --border: 213 27% 92%;
+  --input: 213 27% 92%;
+  --ring: 212 63% 37%;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: geometricPrecision;
+}
+
+body {
+  margin: 0;
+  background: #F6F8FB;
+  color: #0F172A;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: #bdcde0;
+  color: #0F172A;
+}
+
+.container-grid {
+  width: min(100% - 32px, 1180px);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .container-grid {
+    width: min(100% - 56px, 1180px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-grid {
+    width: min(100% - 72px, 1280px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-grid {
+    width: min(100% - 96px, 1440px);
+  }
+}
+
+@media (min-width: 1800px) {
+  .container-grid {
+    width: min(100% - 112px, 1600px);
+  }
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: #235999;
+}
+
+.dashboard-grid {
+  background-image:
+    linear-gradient(rgba(35, 89, 153, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 89, 153, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.soft-mask {
+  mask-image: linear-gradient(180deg, black 70%, transparent 100%);
+}
+
+@keyframes loading-gradient-bar {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 220% 50%;
+  }
+}
+
+.animate-loading-gradient-bar {
+  animation: loading-gradient-bar 2.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-loading-gradient-bar {
+    animation: none !important;
+  }
+}
