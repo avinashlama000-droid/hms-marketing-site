@@ -3,14 +3,15 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-ui px-5 text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50",
+  "focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-ui px-5 text-sm font-semibold transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 [@media(hover:hover)]:hover:-translate-y-0.5",
   {
     variants: {
       variant: {
-        primary: "bg-brand-800 text-white shadow-crisp hover:bg-brand-700",
-        secondary: "border border-border bg-white text-ink-900 shadow-crisp hover:bg-ink-50",
-        dark: "bg-ink-900 text-white shadow-crisp hover:bg-ink-800",
-        ghost: "text-ink-700 hover:bg-white/70 hover:text-ink-900",
+        primary: "glass-button text-white hover:shadow-glow",
+        brand: "border border-brand-700 bg-brand-700 text-white shadow-crisp hover:bg-brand-800 hover:text-white",
+        secondary: "border border-white/70 bg-white/72 text-ink-900 shadow-deep backdrop-blur-xl hover:bg-white/88 hover:shadow-glow",
+        dark: "border border-white/10 bg-ink-900/88 text-white shadow-deep backdrop-blur-xl hover:bg-ink-800",
+        ghost: "text-ink-700 hover:bg-white/72 hover:text-ink-900 hover:shadow-crisp",
       },
       size: {
         sm: "h-9 px-3 text-xs",

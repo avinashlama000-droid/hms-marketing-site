@@ -12,7 +12,6 @@ const nav = [
   ["Features", "#modules"],
   ["Pricing", "#pricing"],
   ["FAQ", "#faq"],
-  ["Contact", "#contact"],
 ];
 
 export function SiteHeader() {
@@ -52,9 +51,9 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 bg-white/94 shadow-crisp backdrop-blur-xl">
-      <div className="bg-brand-700 text-white">
-        <div className="container-grid flex h-10 items-center justify-between gap-4 text-sm font-semibold xl:h-12 xl:text-base">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-brand-100 bg-white shadow-crisp">
+      <div className="bg-brand-800 text-white">
+        <div className="container-grid flex h-8 items-center justify-between gap-4 text-xs font-semibold xl:h-9 xl:text-sm">
           <div className="flex items-center gap-5">
             <a href={`tel:${site.contactPhone}`} className="hidden items-center gap-2 hover:text-brand-100 sm:flex">
               <Phone className="h-4 w-4" />
@@ -72,25 +71,25 @@ export function SiteHeader() {
           </div>
         </div>
       </div>
-      <div className="container-grid flex h-20 items-center justify-between gap-4 xl:h-24">
+      <div className="container-grid flex h-16 items-center justify-between gap-4 xl:h-[72px]">
         <a href="#top" className="focus-ring flex items-center gap-3 rounded-ui">
-          <span className="grid h-12 w-12 place-items-center rounded-full bg-brand-700 text-white shadow-crisp xl:h-14 xl:w-14">
-            <Building2 className="h-6 w-6 xl:h-7 xl:w-7" />
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-700 text-white shadow-crisp xl:h-11 xl:w-11">
+            <Building2 className="h-5 w-5 xl:h-6 xl:w-6" />
           </span>
           <span>
-            <span className="block text-xl font-black tracking-tight text-brand-800 xl:text-2xl">{site.name}</span>
+            <span className="block text-lg font-black tracking-tight text-brand-800 xl:text-xl">{site.name}</span>
             <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-ink-500 xl:text-xs">
               Hostel Management System
             </span>
           </span>
         </a>
-        <nav className="hidden items-center gap-1 rounded-full border border-brand-100 bg-brand-50/70 p-1 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-1 rounded-full border border-brand-100 bg-white p-1 shadow-crisp lg:flex" aria-label="Primary navigation">
           {nav.map(([label, href], index) => (
             <a
               key={href}
               href={href}
-              className={`focus-ring rounded-full px-5 py-3 text-sm font-bold transition-colors xl:px-6 xl:py-3.5 xl:text-base ${
-                index === 0 ? "bg-brand-700 text-white shadow-crisp" : "text-ink-700 hover:bg-white hover:text-brand-800"
+              className={`focus-ring rounded-full px-4 py-2.5 text-sm font-bold transition-colors xl:px-5 xl:py-3 xl:text-sm ${
+                index === 0 ? "bg-brand-700 text-white shadow-crisp" : "text-ink-700 hover:bg-brand-50 hover:text-brand-800"
               }`}
             >
               {label}
@@ -100,14 +99,19 @@ export function SiteHeader() {
         <div className="hidden items-center gap-2 lg:flex">
           <a
             href={site.appUrl}
-            className="focus-ring rounded-ui px-3 py-2 text-sm font-semibold text-ink-700 hover:bg-white xl:px-4 xl:text-base"
+            className="focus-ring rounded-ui px-3 py-2 text-sm font-semibold text-ink-700 hover:bg-brand-50 hover:shadow-crisp xl:px-4"
           >
             Login
           </a>
           <InquiryDialog
             trigger={
-              <Button type="button" size="sm" className="xl:h-11 xl:px-4 xl:text-sm">
-                <CalendarCheck className="h-4 w-4 xl:h-5 xl:w-5" />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="bg-brand-700 text-white shadow-crisp hover:bg-brand-800 hover:text-white xl:h-10 xl:px-4 xl:text-sm"
+              >
+                <CalendarCheck className="h-4 w-4" />
                 Book Now
               </Button>
             }
@@ -115,7 +119,7 @@ export function SiteHeader() {
         </div>
         <button
           type="button"
-          className="focus-ring grid h-10 w-10 place-items-center rounded-ui border border-border bg-white lg:hidden"
+          className="focus-ring grid h-10 w-10 place-items-center rounded-ui border border-brand-100 bg-white shadow-crisp lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -124,12 +128,12 @@ export function SiteHeader() {
       </div>
       <div aria-hidden="true" className="h-[3px] bg-brand-100/70">
         <div
-          className="h-full origin-left bg-[linear-gradient(90deg,#91accc,#235999,#183e6b,#235999,#91accc)] bg-[length:220%_100%] shadow-[0_0_12px_rgba(35,89,153,0.45)] animate-loading-gradient-bar transition-transform duration-150 ease-out will-change-transform"
+          className="h-full origin-left bg-brand-700 shadow-[0_0_12px_rgba(35,89,153,0.36)] transition-transform duration-150 ease-out will-change-transform"
           style={{ transform: `scaleX(${Math.max(scrollProgress, 2) / 100})` }}
         />
       </div>
       {open ? (
-        <div className="border-t border-border bg-white lg:hidden">
+        <div className="border-t border-brand-100 bg-white shadow-deep lg:hidden">
           <div className="container-grid grid gap-2 py-4">
             {nav.map(([label, href]) => (
               <a

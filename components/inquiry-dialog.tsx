@@ -323,6 +323,7 @@ export function InquiryDialog({ trigger }: { trigger: TriggerElement }) {
                     {step < steps.length - 1 ? (
                       <Button
                         type="button"
+                        variant="brand"
                         onClick={() => {
                           if (validateCurrentStep()) setStep((value) => value + 1);
                         }}

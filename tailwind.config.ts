@@ -42,12 +42,16 @@ const config: Config = {
           system: "#235999",
           amber: "#d89022",
           coral: "#da6255",
-          mint: "#42b892"
+          mint: "#42b892",
+          cyan: "#17b8d8",
+          violet: "#6d5dfc"
         }
       },
       boxShadow: {
         crisp: "0 1px 2px rgba(15, 23, 42, 0.08)",
-        lift: "0 18px 40px rgba(15, 23, 42, 0.12)"
+        lift: "0 18px 40px rgba(15, 23, 42, 0.12)",
+        deep: "0 24px 80px rgba(15, 23, 42, 0.18), 0 8px 24px rgba(35, 89, 153, 0.16)",
+        glow: "0 18px 42px rgba(23, 184, 216, 0.2), 0 8px 24px rgba(35, 89, 153, 0.18)"
       },
       borderRadius: {
         ui: "8px"

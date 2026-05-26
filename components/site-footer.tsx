@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-white">
-      <div className="container-grid grid gap-10 py-10 lg:grid-cols-[1.2fr_0.7fr_0.7fr_0.9fr]">
+      <div className="container-grid grid gap-10 py-12 sm:py-14 lg:grid-cols-[1.2fr_0.7fr_0.7fr_0.9fr]">
         <div>
           <div className="flex items-center gap-2">
             <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-700 text-white">
@@ -27,7 +27,7 @@ export function SiteFooter() {
           </div>
         </div>
         <FooterGroup title="Product" links={["Inquiries", "Students", "Rooms", "Payments", "Complaints"]} />
-        <FooterGroup title="Company" links={["Book demo", "Implementation", "Pricing", "Contact"]} />
+        <FooterGroup title="Company" links={["Implementation", "Pricing"]} />
         <div>
           <p className="text-sm font-black text-ink-900">Contact Us</p>
           <div className="mt-3 grid gap-3 text-sm font-semibold text-ink-600">
@@ -77,9 +77,7 @@ function FooterGroup({ title, links }: { title: string; links: string[] }) {
 }
 
 function hrefFor(link: string) {
-  if (link === "Book demo") return "#book";
   if (link === "Pricing") return "#pricing";
-  if (link === "Contact") return "#contact";
   if (link === "Security") return "/security";
   return "#modules";
 }
