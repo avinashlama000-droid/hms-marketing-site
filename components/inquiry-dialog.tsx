@@ -161,7 +161,7 @@ export function InquiryDialog({ trigger }: { trigger: TriggerElement }) {
               <div className="sticky top-0 z-10 border-b border-border bg-[#F6F8FB]/95 px-5 py-4 backdrop-blur">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Book implementation call</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Implementation request</p>
                     <h2 id="inquiry-title" className="mt-1 text-xl font-black text-ink-900">
                       Tell us how your hostel operates
                     </h2>

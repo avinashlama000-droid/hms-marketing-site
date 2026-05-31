@@ -3,7 +3,6 @@ import {
   BedDouble,
   BellRing,
   CalendarCheck,
-  CheckCircle2,
   ClipboardCheck,
   CreditCard,
   FileBarChart,
@@ -22,13 +21,13 @@ import {
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { FeatureScrollTimeline } from "@/components/feature-scroll-timeline";
-import { InquiryDialog } from "@/components/inquiry-dialog";
 import { MotionReveal } from "@/components/motion-reveal";
 import { ScrollParallax } from "@/components/scroll-parallax";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { HeroSystemPreview, SystemDashboardPreview } from "@/components/system-dashboard-preview";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
+import { PricingSection } from "@/components/billing/pricing-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -76,8 +75,8 @@ const modules = [
 ];
 
 const workflow = [
-  ["Contact support", "The visitor books a demo and submits requirements, current system, preferred modules, and implementation timeline."],
-  ["Qualify inquiry", "Admins review source, priority, seater need, block interest, follow-up owner, notes, and sales status."],
+  ["Subscribe", "The owner chooses a plan, creates a workspace, verifies email, and submits payment details."],
+  ["Review payment", "Admins review subscription details, payment proof, workspace limits, follow-up owner, notes, and sales status."],
   ["Convert resident", "A qualified inquiry becomes a student record with room allocation, fee plan, portal access, and notifications."],
   ["Operate daily", "Payments, dues, complaints, notices, attendance, suppliers, and reports stay connected after admission."],
 ];
@@ -93,7 +92,7 @@ const clients = ["City Hostel", "Campus Stay", "Apex Residency", "Block 360", "S
 
 const faqs = [
   ["Is this only for booking rooms?", "No. Booking and inquiries are the front door. HMS also manages residents, rooms, blocks, dues, payments, staff, complaints, suppliers, notices, email notifications, and reporting."],
-  ["Can Book Now connect to the current backend?", "Yes. The marketing site includes a typed API route that can forward inquiries to an HMS backend endpoint with token-based authentication."],
+  ["Can Subscribe connect to the current backend?", "Yes. The marketing site includes typed billing API routes that connect subscription signups, email verification, quotes, and payment proof to the HMS backend."],
   ["Does it support multi-role operations?", "Yes. The product architecture already includes admin, tenant admin, staff, and resident-facing flows with permission-aware modules."],
   ["Can the design system scale?", "Yes. The site uses typed content, reusable UI primitives, a strict spacing and color system, accessible controls, and CMS-ready section data."],
   ["What happens after an inquiry is submitted?", "The recommended pipeline is new, contacted, follow-up, qualified, converted, closed, or lost, matching the existing HMS inquiry model."],
@@ -138,14 +137,10 @@ function Hero() {
             HMS helps hostel owners, wardens, accountants, and staff replace scattered spreadsheets with a connected operating desk for every resident workflow.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row xl:mt-10">
-            <InquiryDialog
-              trigger={
-                <button type="button" className={cn(buttonVariants({ size: "lg", className: "xl:h-14 xl:px-8 xl:text-lg" }))}>
-                  Book Now
-                  <ArrowRight className="h-5 w-5 xl:h-6 xl:w-6" />
-                </button>
-              }
-            />
+            <a href="/subscribe" className={cn(buttonVariants({ size: "lg", className: "xl:h-14 xl:px-8 xl:text-lg" }))}>
+              Subscribe
+              <ArrowRight className="h-5 w-5 xl:h-6 xl:w-6" />
+            </a>
             <a href="#glimpse" className={cn(buttonVariants({ variant: "secondary", size: "lg", className: "xl:h-14 xl:px-8 xl:text-lg" }))}>
               Explore Product
             </a>
@@ -227,7 +222,7 @@ function ProductSection() {
 
 function WorkflowSection() {
   return (
-    <Section id="workflow" eyebrow="How it works" title="From inquiry to resident operations without handoff loss." body="The conversion story is simple: every booking request becomes structured data that can move through follow-up, conversion, room allocation, finance, and ongoing service.">
+    <Section id="workflow" eyebrow="How it works" title="From subscription to resident operations without handoff loss." body="The conversion story is simple: every subscription creates structured workspace data that can move through verification, payment approval, room allocation, finance, and ongoing service.">
       <div className="grid gap-3 lg:grid-cols-4">
         {workflow.map(([title, body], index) => (
           <MotionReveal key={title} delay={index * 0.04}>
@@ -385,48 +380,6 @@ function TrustSection() {
         <TrustItem value="Permission aware" label="Admin, tenant admin, staff, and student flows map to actual duties." />
         <TrustItem value="Notification ready" label="Email templates and outbox concepts support operational automation." />
         <TrustItem value="Audit friendly" label="Follow-ups, attachments, statuses, owners, and histories are trackable." />
-      </div>
-    </Section>
-  );
-}
-
-function PricingSection() {
-  const plans = [
-    ["Starter", "Small hostels moving away from manual tracking.", "Up to 50 beds", ["Inquiry CRM", "Students and rooms", "Dues and payment history", "Complaints and notices"]],
-    ["Growth", "Hostels with finance, staff, and multi-block operations.", "50-250 beds", ["Everything in Starter", "Supplier and expenses", "Staff check-in/out", "Email notifications", "Reports"]],
-    ["Enterprise", "Multi-branch operators that need controls and rollout support.", "Custom capacity", ["Everything in Growth", "Multi-tenant scope", "Migration support", "CRM and automation integrations", "Custom implementation"]],
-  ];
-
-  return (
-    <Section id="pricing" eyebrow="Pricing" title="Flexible plans for every hostel size." body="Pricing is structured as inquiry-led because implementation depends on beds, locations, modules, migration, integrations, and automation depth.">
-      <div className="grid gap-3 lg:grid-cols-3">
-        {plans.map(([name, intro, capacity, features], index) => (
-          <div key={name as string} className={cn("rounded-ui border p-6", index === 1 ? "border-white/20 bg-gradient-to-br from-brand-900 via-brand-700 to-signal-cyan text-white shadow-glow" : "glass-card text-ink-900")}>
-            {index === 1 ? (
-              <div className="mb-4 inline-flex rounded-full bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-brand-800">
-                Most popular
-              </div>
-            ) : null}
-            <h3 className="text-2xl font-black">{name}</h3>
-            <p className={cn("mt-3 text-sm leading-6", index === 1 ? "text-brand-50" : "text-ink-600")}>{intro}</p>
-            <p className="mt-6 text-3xl font-black">{capacity}</p>
-            <div className="mt-6 grid gap-3">
-              {(features as string[]).map((feature) => (
-                <div key={feature} className="flex items-start gap-2 text-sm font-bold">
-                  <CheckCircle2 className={cn("mt-0.5 h-4 w-4 shrink-0", index === 1 ? "text-white" : "text-brand-700")} />
-                  {feature}
-                </div>
-              ))}
-            </div>
-            <InquiryDialog
-              trigger={
-                <button type="button" className={cn(buttonVariants({ variant: index === 1 ? "secondary" : "primary", className: "mt-7 w-full" }))}>
-                  Get Started
-                </button>
-              }
-            />
-          </div>
-        ))}
       </div>
     </Section>
   );

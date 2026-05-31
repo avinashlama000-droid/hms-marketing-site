@@ -1,17 +1,15 @@
 "use client";
 
-import { Building2, CalendarCheck, Mail, Menu, Phone, X } from "lucide-react";
+import { Building2, Mail, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { InquiryDialog } from "@/components/inquiry-dialog";
 import { site } from "@/lib/site";
 
 const nav = [
-  ["Home", "#top"],
-  ["About", "#product"],
-  ["Features", "#modules"],
-  ["Pricing", "#pricing"],
-  ["FAQ", "#faq"],
+  ["Home", "/#top"],
+  ["About", "/#product"],
+  ["Features", "/#modules"],
+  ["Pricing", "/#pricing"],
+  ["FAQ", "/#faq"],
 ];
 
 export function SiteHeader() {
@@ -72,7 +70,7 @@ export function SiteHeader() {
         </div>
       </div>
       <div className="container-grid flex h-16 items-center justify-between gap-4 xl:h-[72px]">
-        <a href="#top" className="focus-ring flex items-center gap-3 rounded-ui">
+        <a href="/#top" className="focus-ring flex items-center gap-3 rounded-ui">
           <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-700 text-white shadow-crisp xl:h-11 xl:w-11">
             <Building2 className="h-5 w-5 xl:h-6 xl:w-6" />
           </span>
@@ -103,19 +101,12 @@ export function SiteHeader() {
           >
             Login
           </a>
-          <InquiryDialog
-            trigger={
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="bg-brand-700 text-white shadow-crisp hover:bg-brand-800 hover:text-white xl:h-10 xl:px-4 xl:text-sm"
-              >
-                <CalendarCheck className="h-4 w-4" />
-                Book Now
-              </Button>
-            }
-          />
+          <a
+            href="/subscribe"
+            className="focus-ring rounded-ui border border-brand-200 bg-brand-50 px-3 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-100 xl:px-4"
+          >
+            Subscribe
+          </a>
         </div>
         <button
           type="button"
@@ -145,14 +136,9 @@ export function SiteHeader() {
                 {label}
               </a>
             ))}
-            <InquiryDialog
-              trigger={
-                <Button type="button" className="mt-2 w-full">
-                  <CalendarCheck className="h-4 w-4" />
-                  Book Now
-                </Button>
-              }
-            />
+            <a href="/subscribe" className="mt-2 rounded-ui bg-brand-700 px-3 py-3 text-center text-sm font-black text-white" onClick={() => setOpen(false)}>
+              Subscribe
+            </a>
           </div>
         </div>
       ) : null}

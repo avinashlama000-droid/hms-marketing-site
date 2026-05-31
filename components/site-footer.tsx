@@ -77,7 +77,7 @@ function FooterGroup({ title, links }: { title: string; links: string[] }) {
 }
 
 function hrefFor(link: string) {
-  if (link === "Pricing") return "#pricing";
+  if (link === "Pricing") return "/#pricing";
   if (link === "Security") return "/security";
-  return "#modules";
+  return "/#modules";
 }
