@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 const publicBillingPaths = new Set([
   "plans",
-  "promo-codes/validate",
   "subscriptions/quote",
   "signups",
   "signups/verify-email",

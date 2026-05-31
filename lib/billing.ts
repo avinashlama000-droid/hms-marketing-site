@@ -69,10 +69,10 @@ export const marketingBillingApi = {
   async plans(): Promise<BillingPlan[]> {
     return (await billingRequest<{ data: BillingPlan[] }>("plans")).data;
   },
-  async quote(plan: string, promoCode?: string): Promise<BillingQuote> {
+  async quote(plan: string): Promise<BillingQuote> {
     return billingRequest<BillingQuote>("subscriptions/quote", {
       method: "POST",
-      body: JSON.stringify({ plan, promo_code: promoCode || undefined }),
+      body: JSON.stringify({ plan }),
     });
   },
   async signup(payload: Record<string, unknown>): Promise<SignupResult> {

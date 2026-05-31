@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, LoaderCircle, TicketPercent } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { activeStudentLimit, type BillingPlan, type BillingQuote, firstBillingError, formatNpr, marketingBillingApi } from "@/lib/billing";
 import { buttonVariants, Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ const initialForm = {
   email: "",
   password: "",
   password_confirmation: "",
-  promo_code: "",
   capacity_mode: "standard",
   requested_max_blocks: "",
   requested_max_students_total: "",
@@ -27,13 +26,10 @@ export function SubscribeForm() {
   const [plans, setPlans] = useState<BillingPlan[]>([]);
   const [plan, setPlan] = useState(requestedPlan);
   const [form, setForm] = useState(initialForm);
-  const [appliedPromo, setAppliedPromo] = useState("");
   const [baseQuote, setBaseQuote] = useState<BillingQuote>();
   const [quote, setQuote] = useState<BillingQuote>();
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [quoting, setQuoting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const selectedPlan = useMemo(() => plans.find((item) => item.slug === plan), [plan, plans]);
@@ -67,34 +63,6 @@ export function SubscribeForm() {
 
   const update = (key: keyof typeof initialForm, value: string) => setForm((current) => ({ ...current, [key]: value }));
 
-  const updatePromo = (value: string) => {
-    const normalized = value.toUpperCase();
-    update("promo_code", normalized);
-
-    if (appliedPromo && normalized.trim() !== appliedPromo) {
-      setAppliedPromo("");
-      setMessage("Promo code changed. Apply it again to use the discount.");
-      setQuote(baseQuote);
-    }
-  };
-
-  const applyPromo = async () => {
-    const promoCode = form.promo_code.trim();
-    if (!promoCode) return;
-    setQuoting(true);
-    setError("");
-    setMessage("");
-    try {
-      setQuote(await marketingBillingApi.quote(plan, promoCode));
-      setAppliedPromo(promoCode);
-      setMessage("Promo code applied.");
-    } catch (reason) {
-      setError(firstBillingError(reason));
-    } finally {
-      setQuoting(false);
-    }
-  };
-
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     setSubmitting(true);
@@ -103,7 +71,6 @@ export function SubscribeForm() {
       const result = await marketingBillingApi.signup({
         ...form,
         plan,
-        promo_code: appliedPromo || undefined,
       });
       const params = new URLSearchParams({ email: form.email });
       if (result.payment) params.set("payment", String(result.payment.id));
@@ -134,24 +101,23 @@ export function SubscribeForm() {
       <form onSubmit={submit} className="glass-card rounded-ui p-6 sm:p-8">
         <Link href="/#pricing" className="inline-flex items-center gap-2 text-sm font-black text-brand-700"><ArrowLeft className="h-4 w-4" /> Back to plans</Link>
         <h1 className="mt-5 text-3xl font-black text-ink-900">Create your HMS workspace</h1>
-        <p className="mt-2 text-sm leading-6 text-ink-600">Choose a plan, apply an optional promo code, and verify the owner email. Your workspace activates after manual payment approval.</p>
+        <p className="mt-2 text-sm leading-6 text-ink-600">Choose a plan and verify the owner email. Your workspace activates after manual payment approval.</p>
 
         {error ? <p className="mt-5 rounded-ui border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p> : null}
-        {message ? <p className="mt-5 rounded-ui border border-green-200 bg-green-50 p-3 text-sm font-semibold text-green-700">{message}</p> : null}
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2">
           <Field label="Workspace name"><Input required value={form.workspace_name} onChange={(event) => update("workspace_name", event.target.value)} placeholder="Sunrise Student Hostel" /></Field>
           <Field label="Owner name"><Input required value={form.name} onChange={(event) => update("name", event.target.value)} placeholder="Workspace owner" /></Field>
           <Field label="Owner email"><Input required type="email" value={form.email} onChange={(event) => update("email", event.target.value)} placeholder="owner@example.com" /></Field>
           <Field label="Plan">
-            <select value={plan} onChange={(event) => { setPlan(event.target.value); setForm((current) => ({ ...current, promo_code: "" })); setAppliedPromo(""); setMessage(""); }} className="focus-ring h-11 w-full rounded-ui border border-border bg-white px-3 text-sm text-ink-900 shadow-crisp">
+            <select value={plan} onChange={(event) => setPlan(event.target.value)} className="focus-ring h-11 w-full rounded-ui border border-border bg-white px-3 text-sm text-ink-900 shadow-crisp">
               {plans.map((item) => <option key={item.id} value={item.slug}>{item.name} - {formatNpr(item.price_minor)} / {item.billing_cycle}</option>)}
             </select>
           </Field>
           <Field label="Password"><Input required type="password" value={form.password} onChange={(event) => update("password", event.target.value)} placeholder="At least 8 characters" /></Field>
           <Field label="Confirm password"><Input required type="password" value={form.password_confirmation} onChange={(event) => update("password_confirmation", event.target.value)} placeholder="Repeat password" /></Field>
           <Field label="Capacity">
-            <select value={form.capacity_mode} onChange={(event) => { update("capacity_mode", event.target.value); if (event.target.value === "custom") { update("promo_code", ""); setAppliedPromo(""); setQuote(baseQuote); } }} className="focus-ring h-11 w-full rounded-ui border border-border bg-white px-3 text-sm text-ink-900 shadow-crisp">
+            <select value={form.capacity_mode} onChange={(event) => { update("capacity_mode", event.target.value); setQuote(baseQuote); }} className="focus-ring h-11 w-full rounded-ui border border-border bg-white px-3 text-sm text-ink-900 shadow-crisp">
               <option value="standard">Use standard plan limits</option>
               <option value="custom">Request custom capacity quote</option>
             </select>
@@ -162,14 +128,6 @@ export function SubscribeForm() {
           </> : null}
         </div>
         <p className="mt-2 text-xs font-semibold text-ink-500">Use at least 8 characters with upper and lower case letters and a number.</p>
-
-        <div className={cn("mt-6 flex flex-col gap-2 sm:flex-row", form.capacity_mode === "custom" && "hidden")}>
-          <Input value={form.promo_code} onChange={(event) => updatePromo(event.target.value)} placeholder="Optional promo code" />
-          <Button type="button" variant="secondary" disabled={quoting || !form.promo_code.trim()} onClick={applyPromo}>
-            {quoting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <TicketPercent className="h-4 w-4" />}
-            Apply promo
-          </Button>
-        </div>
 
         <Button type="submit" className="mt-7 w-full" disabled={submitting || !plan}>
           {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
@@ -183,7 +141,6 @@ export function SubscribeForm() {
         <h2 className="mt-3 text-xl font-black text-ink-900">{selectedPlan?.name ?? "Select a plan"}</h2>
         <div className="mt-5 grid gap-3 text-sm font-semibold text-ink-700">
           <Summary label="Plan price" value={quote ? formatNpr(quote.planPriceMinor) : "-"} />
-          <Summary label="Discount" value={quote ? `- ${formatNpr(quote.discountMinor)}` : "-"} />
           <Summary label="Amount due" value={quote ? formatNpr(quote.finalAmountMinor) : "-"} strong />
         </div>
         <div className="mt-6 grid gap-2 text-sm font-bold text-ink-700">
