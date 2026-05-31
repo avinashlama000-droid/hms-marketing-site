@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { activeStudentLimit, type BillingPlan, type BillingQuote, firstBillingError, formatNpr, marketingBillingApi } from "@/lib/billing";
 import { buttonVariants, Button } from "@/components/ui/button";
@@ -114,8 +114,8 @@ export function SubscribeForm() {
               {plans.map((item) => <option key={item.id} value={item.slug}>{item.name} - {formatNpr(item.price_minor)} / {item.billing_cycle}</option>)}
             </select>
           </Field>
-          <Field label="Password"><Input required type="password" value={form.password} onChange={(event) => update("password", event.target.value)} placeholder="At least 8 characters" /></Field>
-          <Field label="Confirm password"><Input required type="password" value={form.password_confirmation} onChange={(event) => update("password_confirmation", event.target.value)} placeholder="Repeat password" /></Field>
+          <PasswordField id="workspace_password" label="Password" required value={form.password} onChange={(event) => update("password", event.target.value)} placeholder="At least 8 characters" autoComplete="new-password" />
+          <PasswordField id="workspace_password_confirmation" label="Confirm password" required value={form.password_confirmation} onChange={(event) => update("password_confirmation", event.target.value)} placeholder="Repeat password" autoComplete="new-password" />
           <Field label="Capacity">
             <select value={form.capacity_mode} onChange={(event) => { update("capacity_mode", event.target.value); setQuote(baseQuote); }} className="focus-ring h-11 w-full rounded-ui border border-border bg-white px-3 text-sm text-ink-900 shadow-crisp">
               <option value="standard">Use standard plan limits</option>
@@ -160,6 +160,29 @@ export function CheckoutMessage({ children }: { children: React.ReactNode }) {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return <label className="text-sm font-black text-ink-700">{label}<span className="mt-1 block">{children}</span></label>;
+}
+
+function PasswordField({ label, className, id, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  const [showPassword, setShowPassword] = useState(false);
+  const Icon = showPassword ? EyeOff : Eye;
+
+  return (
+    <div className="text-sm font-black text-ink-700">
+      <label htmlFor={id}>{label}</label>
+      <span className="relative mt-1 block">
+        <Input id={id} {...props} type={showPassword ? "text" : "password"} className={cn("pr-11", className)} />
+        <button
+          type="button"
+          onClick={() => setShowPassword((current) => !current)}
+          className="focus-ring absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-ui text-ink-500 transition-colors hover:bg-brand-50 hover:text-brand-800"
+          aria-label={showPassword ? "Hide password" : "Show password"}
+          aria-controls={id}
+        >
+          <Icon className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </span>
+    </div>
+  );
 }
 
 function Summary({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
