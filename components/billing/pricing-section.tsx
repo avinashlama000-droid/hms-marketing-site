@@ -69,7 +69,7 @@ export function PricingSection() {
                   <PlanFeature highlighted={highlighted}>{activeStudentLimit(plan) ?? "Unlimited"} active students total</PlanFeature>
                   {(plan.features_json ?? []).map((feature) => <PlanFeature key={feature} highlighted={highlighted}>{feature}</PlanFeature>)}
                 </div>
-                <Link href={`/subscribe?plan=${encodeURIComponent(plan.slug)}`} className={cn(buttonVariants({ variant: highlighted ? "secondary" : "primary", className: "mt-7 w-full" }))}>
+                <Link href={`/subscribe?plan=${encodeURIComponent(plan.slug)}`} className={cn(buttonVariants({ variant: highlighted ? "secondary" : "primary", className: cn("mt-7 w-full", highlighted && "text-white hover:text-white") }))}>
                   Subscribe
                   <ArrowRight className="h-4 w-4" />
                 </Link>
